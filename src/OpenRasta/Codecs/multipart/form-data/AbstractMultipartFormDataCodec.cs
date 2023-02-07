@@ -18,6 +18,7 @@ namespace OpenRasta.Codecs
     public abstract class AbstractMultipartFormDataCodec
     {
         const string FORMDATA_CACHE = "__MultipartFormDataCodec_FORMDATA_CACHED";
+        const string TEMPFILENAMES = "__cBrain_TempFileNames"; // allow an OperationInterceptor to cleanup temporary files
 
         // todo: inject the treshold from configuration, and be per-resource
         const int REQUEST_LENGTH_TRESHOLD = 80000;
@@ -119,9 +120,21 @@ namespace OpenRasta.Codecs
             return Cache[source];
         }
 
-        static Stream CreateTempFile(out string filePath)
+        void RegisterTempFile(string fileName)
+        {
+            List<string> tempFileNames = _pipeline[TEMPFILENAMES] as List<string>;
+            if (tempFileNames == null)
+            {
+              tempFileNames = new List<string>();
+              _pipeline[TEMPFILENAMES] = tempFileNames;
+            }
+            tempFileNames.Add(fileName);
+        }
+
+        Stream CreateTempFile(out string filePath)
         {
             filePath = Path.GetTempFileName();
+            RegisterTempFile(filePath);
             return File.OpenWrite(filePath);
         }
 
@@ -148,10 +161,10 @@ namespace OpenRasta.Codecs
                             string filePath;
                             using (var fileStream = CreateTempFile(out filePath))
                             {
-                               memoryStream.Position = 0;
-                               memoryStream.CopyTo(fileStream);
-                               fileStream.Write(_buffer, 0, lastRead);
-                               requestPart.Stream.CopyTo(fileStream);
+                                memoryStream.Position = 0;
+                                memoryStream.CopyTo(fileStream);
+                                fileStream.Write(_buffer, 0, lastRead);
+                                requestPart.Stream.CopyTo(fileStream);
                             }
                             memoryStream = null;
                             requestPart.SwapStream(filePath);
