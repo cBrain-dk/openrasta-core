@@ -2,17 +2,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>openrasta-core</id>
-        <version>$version$</version>
+        <version>2.5.2001.cbrain-1</version>
         <title>OpenRasta Core</title>
         <authors>Sebastien Lambla</authors>
         <owners>Sebastien Lambla</owners>
-        <licenseUrl>http://openrasta.org/</licenseUrl>
-        <projectUrl>https://github.com/openrasta/openrasta-core</projectUrl>
-        <iconUrl>http://openrasta.org/openRastaLogo-32x32.png</iconUrl>
+        <license type="expression">openrasta.org</license>
+        <projectUrl>https://github.com/cBrain-dk/openrasta-core</projectUrl>
+        <!-- <iconUrl>http://openrasta.org/openRastaLogo-32x32.png</iconUrl> -->
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>OpenRasta is an open-source .NET framework for building REST APIs</description>
         <releaseNotes />
         <copyright>Copyright 2007</copyright>
         <tags>OpenRasta REST HTTP XML JSON API</tags>
     </metadata>
+    <files>
+        <file src="bin\Release\OpenRasta.dll" target="lib\net40" />
+    </files>
 </package>

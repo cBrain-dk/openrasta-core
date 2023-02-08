@@ -1,0 +1,20 @@
+----- Get cBrain fork -----
+git clone https://github.com/cBrain-dk/openrasta-core
+git fetch origin
+
+----- Specify package version number -----
+Decide for a new version number.
+Add the new version number to the version element in openrasta-core\src\OpenRasta\OpenRasta.nuspec.
+You should also use this version number for a git tag later.
+
+----- Create package -----
+Build the solution in release mode.
+Identify <nugetpath> for your nuget installation (download and install nuget if you do not have it).
+Open command prompt in openrasta-core\src\OpenRasta.
+Create openrasta-core.<version-number>.nupck by running:
+  <nugetpath>\nuget.exe pack .\OpenRasta.nuspec
+  Expect to get warning NU5124 about license identifier and warning NU5128 about target framework.
+
+----- Publish package -----
+Publish the nuget package to the cBrain nuget repository by running (currently located on lager1):
+  <nugetpath>\nuget add .\openrasta-core.<version-numer>.nupkg -Source \\lager1\shared\fabrik\NugetRepository
